@@ -138,6 +138,9 @@ jobs:
           test "$(file --brief --mime-type /tmp/background-removed.png)" = "image/png"
           echo "✅ Background removal worker OK"
 
+      # The empty NEXT_PUBLIC_* values mirror the bundled Compose file, which
+      # declares every optional integration as `${VAR:-}`: a container must
+      # treat them as unset, not as invalid URLs or locales (issue #65).
       - name: Boot app against empty database
         run: |
           docker run -d --name louez-app --network louez-net -p 3000:3000 \
@@ -152,6 +155,13 @@ jobs:
             -e S3_PUBLIC_URL=/media \
             -e NEXT_PUBLIC_APP_URL=http://localhost:3000 \
             -e NEXT_PUBLIC_APP_DOMAIN=localhost:3000 \
+            -e NEXT_PUBLIC_DASHBOARD_SUBDOMAIN= \
+            -e NEXT_PUBLIC_FORMAT_LOCALE= \
+            -e NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY= \
+            -e NEXT_PUBLIC_VAPID_PUBLIC_KEY= \
+            -e NEXT_PUBLIC_POSTHOG_KEY= \
+            -e NEXT_PUBLIC_UMAMI_SCRIPT_URL= \
+            -e NEXT_PUBLIC_UMAMI_WEBSITE_ID= \
             -e NEXT_PUBLIC_GLEAP_API_KEY=runtime-public-config-smoke-standalone \
             -e NEXT_PUBLIC_FROMHELLO_API_URL=https://runtime-public-config-smoke-standalone.example.invalid \
             -e NEXT_PUBLIC_OPENREPLAY_INGEST_POINT=https://runtime-public-config-smoke-replay-standalone.example.invalid/ingest \
@@ -313,6 +323,16 @@ jobs:
 
       - name: Verify the app is healthy
         run: curl -fsS http://localhost:3000/api/health
+
+      # /api/health bypasses the Next.js proxy, so it stays green while every
+      # page fails on a configuration error. A page must render too.
+      - name: Verify a page renders with the bundled defaults
+        run: |
+          status=$(curl -s -o /dev/null -w '%{http_code}' -L http://localhost:3000/login)
+          if [ "$status" != "200" ]; then
+            echo "Expected /login to return 200 with the bundled defaults, got $status"
+            exit 1
+          fi
 
       - name: Verify the bucket accepts the app's credentials
         run: |

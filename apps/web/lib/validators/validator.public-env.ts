@@ -62,9 +62,22 @@ interface ReadPublicEnvOptions {
   readEnv: PublicEnvReader;
 }
 
+// Container platforms pass unset optional variables as empty strings: the
+// bundled Compose file declares every public variable with a `${VAR:-}`
+// default so operators can override it from .env. An empty value means "not
+// configured", never an invalid URL or locale.
+const withoutEmptyValues = (source: PublicEnvSource): PublicEnvSource =>
+  Object.fromEntries(
+    Object.entries(source).map(([key, value]) => [
+      key,
+      value === undefined || value.trim() === "" ? undefined : value,
+    ]),
+  );
+
 export const getPublicEnvRuntimeValues = (
-  source: PublicEnvSource,
+  rawSource: PublicEnvSource,
 ): Record<keyof PublicEnv, string | undefined> => {
+  const source = withoutEmptyValues(rawSource);
   const appUrl = source.NEXT_PUBLIC_APP_URL || source.AUTH_URL;
   let appDomain = source.NEXT_PUBLIC_APP_DOMAIN;
 
