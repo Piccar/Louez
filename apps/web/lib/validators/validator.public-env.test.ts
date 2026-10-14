@@ -42,3 +42,38 @@ test("reads and validates public values through a computed runtime lookup", () =
   assert.equal(config.NEXT_PUBLIC_APP_DOMAIN, "reader.example.com");
   assert.equal(config.NEXT_PUBLIC_GLEAP_API_KEY, "runtime-reader-key");
 });
+
+test("treats empty optional values as unset, as the bundled Compose file passes them", () => {
+  const runtime: Record<string, string | undefined> = {
+    AUTH_URL: "https://compose.example.com",
+    NEXT_PUBLIC_APP_URL: "https://compose.example.com",
+    NEXT_PUBLIC_APP_DOMAIN: "compose.example.com",
+    NEXT_PUBLIC_DASHBOARD_SUBDOMAIN: "",
+    NEXT_PUBLIC_FORMAT_LOCALE: "",
+    NEXT_PUBLIC_UMAMI_SCRIPT_URL: "",
+    NEXT_PUBLIC_OPENREPLAY_INGEST_POINT: "",
+    NEXT_PUBLIC_FROMHELLO_API_URL: " ",
+    NEXT_PUBLIC_POSTHOG_HOST: "",
+  };
+  const config = readPublicEnvRuntime({
+    readEnv: (name) => runtime[name],
+  });
+
+  assert.equal(config.NEXT_PUBLIC_DASHBOARD_SUBDOMAIN, "app");
+  assert.equal(config.NEXT_PUBLIC_FORMAT_LOCALE, undefined);
+  assert.equal(config.NEXT_PUBLIC_UMAMI_SCRIPT_URL, undefined);
+  assert.equal(config.NEXT_PUBLIC_OPENREPLAY_INGEST_POINT, undefined);
+  assert.equal(config.NEXT_PUBLIC_FROMHELLO_API_URL, undefined);
+  assert.equal(config.NEXT_PUBLIC_POSTHOG_HOST, "https://eu.i.posthog.com");
+});
+
+test("falls back to AUTH_URL when the public origin is passed empty", () => {
+  const config = parsePublicEnv({
+    AUTH_URL: "https://fallback.example.com",
+    NEXT_PUBLIC_APP_URL: "",
+    NEXT_PUBLIC_APP_DOMAIN: "",
+  });
+
+  assert.equal(config.NEXT_PUBLIC_APP_URL, "https://fallback.example.com");
+  assert.equal(config.NEXT_PUBLIC_APP_DOMAIN, "fallback.example.com");
+});

@@ -6,6 +6,15 @@ All notable changes to Louez are documented here.
 
 ---
 
+## [2.3.1] - October 14, 2026
+
+### 🐳 Self-Hosting
+
+- 🩹 **Empty optional variables no longer break the bundled Compose stack** — `docker-compose.yml` passes unset integrations as empty strings (`${VAR:-}`). The public configuration now treats them as unset instead of rejecting them, which returned a 500 on every page of a fresh `docker compose up -d` with 2.3.0. Reported in #65.
+- 🧪 **CI** — The image smoke test boots with the same empty defaults, and the Compose smoke test now loads a page rather than only the health endpoint.
+
+---
+
 ## [2.3.0] - October 14, 2026
 
 ### 🏪 Storefront & Checkout
@@ -663,6 +672,15 @@ _For upgrade instructions, see the [documentation](https://louez.io/docs)._
 > [🇬🇧 English](#changelog) | 🇫🇷 **Français**
 
 Toutes les évolutions notables de Louez sont documentées ici.
+
+---
+
+## [2.3.1] - 14 octobre 2026
+
+### 🐳 Auto-hébergement
+
+- 🩹 **Les variables optionnelles vides ne cassent plus la stack Compose fournie** — `docker-compose.yml` transmet les intégrations non renseignées comme des chaînes vides (`${VAR:-}`). La configuration publique les traite désormais comme absentes au lieu de les rejeter, ce qui renvoyait une erreur 500 sur chaque page d'un `docker compose up -d` neuf en 2.3.0. Signalé dans #65.
+- 🧪 **CI** — Le smoke test de l'image démarre avec les mêmes valeurs vides, et le test Compose charge désormais une page et non plus seulement le point de santé.
 
 ---
 
