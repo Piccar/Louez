@@ -219,9 +219,9 @@ export function buildPhoneSystemPrompt(params: PhonePromptParams): string {
     const deliveryText = !params.deliveryEnabled
       ? 'not available (pickup at the store only)'
       : params.deliveryMode === 'required'
-        ? 'required (the order is delivered, not picked up)'
+        ? 'required (delivered to and collected from the customer, no store pickup or return)'
         : params.deliveryMode === 'included'
-          ? 'included (delivery is part of the price)'
+          ? 'included (delivered to and collected from the customer, part of the price)'
           : 'available on request, or pickup at the store'
     storeFacts.push(`Delivery: ${deliveryText}`)
   }
