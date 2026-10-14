@@ -6,7 +6,71 @@ All notable changes to Louez are documented here.
 
 ---
 
-## [Unreleased]
+## [2.3.0] - October 14, 2026
+
+### 🏪 Storefront & Checkout
+
+- 🛒 **Rebuilt rental storefront** — Customers pick their dates, browse the catalog and add equipment, variants and accessories straight from the product list, then review the cart before booking. Catalog navigation and filters survive page changes, and unavailable stock is filtered out.
+- 🖼️ **Full-screen appearance editor** — Live preview, hero text placed anywhere on the photo, store-picked hero layout, favicon and tagline.
+- 📅 **Smarter availability** — The rental calendar prefetches and validates availability, seasonal rates show in calendars and price breakdowns, and the return leg is a single choice.
+- 💳 **Safer payments** — Pending payments resume without duplicate bookings, false payment confirmations are prevented, Stripe minimums are enforced and failed checkouts are cancelled.
+- 🧾 **Checkout refinements** — Address autocomplete, clearer steps and insurance coverage, deposit excluded from product totals, discounts hidden above the store's display cap.
+- 🧩 **Embed widget** — Rebuilt around split date and time fields, resizes reliably and ships with a host preview.
+- 🔍 **SEO** — Readable product and category slugs, fallback language, Search Console verification setting; OpenFreeMap replaces CARTO for maps.
+
+### 📦 Products & Pricing
+
+- 💶 **Fixed pricing and consumable stock** — Flat-rate items independent of the rental duration, consumables that are sold rather than returned, required accessories and untracked stock.
+- 📈 **Pricing editor** — Rate ladders with simulation, seasonal rates allocated across the full rental duration, promotions in product forms and listings.
+- 🏷️ **Variants per product** — Variants are managed per product; bookings without a chosen variant float until assignment, and legacy variants and select values are preserved.
+
+### 📅 Reservations, Dashboard & Account
+
+- 🧾 **Billing identity per booking** — Each reservation keeps its own billing snapshot.
+- 🔙 **Back navigation** — Calendar and planning restore the viewed date, and the reservation header uses native history.
+- 🗓️ **Calendar** — Distinct delivery and return icons; timeline data loads through store-scoped oRPC procedures.
+- 🔐 **Permissions** — Store management permissions are enforced on sensitive operations and reflected throughout the interface.
+- 👤 **Customer account** — Customers see deposits, reservation updates, inspection reports and fulfillment details, can request a cancellation and delete their account.
+- 🛍️ **Sales channels** — Simplified settings and the Reeent marketplace integration: catalog channel, booking API and chromeless storefront.
+
+### 🌍 Languages, Documents & Brand
+
+- 🌐 **Thirteen languages** — The app, documents and demos are aligned with the thirteen website languages; dates and numbers follow the active locale; the checkout language is preserved in customer emails and contracts.
+- 📄 **Documents** — Refreshed PDF layouts with insured items marked, storefront bookings printed as signed at booking, Inter embedded so every locale prints its own characters, page numbers that no longer break long documents.
+- ✉️ **Emails** — Transactional templates unified around shared design tokens; customer notes surface in the landlord request email.
+- 🔑 **Optional password** — Merchants can add a password next to magic-link sign-in, protected by auth rate limits.
+- ✨ **New brand symbol** — Adopted across every icon, with versioned PWA icons so installed apps pick it up.
+
+### 🐳 Self-Hosting, Security & Upgrades
+
+- ⚙️ **Runtime public configuration** — `NEXT_PUBLIC_*` values are read by the server at runtime and injected into the page, so one published image works on any domain. Fixes #65.
+- 📦 **MinIO** — The withdrawn `minio/minio` image is replaced by the Chainguard build; existing volumes keep working.
+- 🗃️ **Automatic schema upgrade** — Fifteen additive migrations (billing snapshots, category slugs, store favicon and tagline, auth rate limits, pricing and stock models). They run at application startup as before.
+- 🔒 **Hardening** — Server env kept out of client bundles (SMS, subscription), Search Console ownership verification protected, Stripe refunds no longer counted as revenue.
+- 🧪 **QA harness** — End-to-end storefront QA with HTTP checks and a fixture gallery for emails and PDF documents; demo posters are no longer captured during the image build.
+
+> **Self-hosting note:** `docker compose pull && docker compose up -d` upgrades the bundled stack. Existing databases migrate automatically on startup.
+
+---
+
+## [2.2.0] - August 24, 2026
+
+> Also covers the 2.2.1 and 2.2.2 patch tags published the same day.
+
+### 🧾 Electronic Invoicing
+
+- 📑 **Legal invoices on every cash-in** — Invoice numbering, EN 16931 builder, PDF generation and automatic triggers; manual-payment refunds produce credit notes.
+- 🔗 **Super PDP integration** — OAuth enrollment, transmission queue and event polling; invoices are transmitted immediately at cash-in; account validation is a pending state that self-heals.
+- 📥 **Supplier-invoice inbox** — Received invoices, notifications and manual sync; reception-only setups are a first-class outcome.
+- 🏢 **Business customers** — SIREN and VAT capture at checkout; the store VAT regime is synced to Super PDP.
+
+### 📊 Analytics & Dashboard
+
+- 📈 **Sales analytics** — Tiered sales page, rental activity metrics, top customers, manual payments always included; acquisition linked to onboarding.
+- 💸 **Stripe payouts** — Payout history with pagination.
+- 📱 **Mobile reservations** — Quick actions, confirmation drawer, request acceptance and calendar details on mobile; filter by payment method; bulk contract ZIP export.
+- 🏠 **Home** — Today's overdue pickups and returns are flagged; install and push prompts moved to the sidebar; theme toggle shortcut.
+- 🗂️ **Storefront** — Category-first browsing mode.
 
 ### 📄 License
 
@@ -15,6 +79,11 @@ All notable changes to Louez are documented here.
 - ↩️ **Network copyleft** — If you modify Louez and offer it to others over a network, you must make your modified source available to those users under the AGPL.
 - ™️ **Trademark reserved** — "Louez" and the Louez logo remain trademarks of Synapsr. The AGPL covers the code, not the brand.
 - 🎨 **Third-party assets unchanged** — Nucleo icons are still not covered by the repository license and require a valid Nucleo license; rembg (MIT) and DIS/IS-Net (Apache 2.0) attributions remain in `NOTICE`.
+
+### 🐳 Self-Hosting
+
+- 🟢 **Node 22** — Production image upgraded to Node 22; one-click deploy buttons; contribution guide with DCO sign-off.
+- 🗃️ **Two additive migrations** for the e-invoicing schema, run at application startup.
 
 ---
 
@@ -597,7 +666,71 @@ Toutes les évolutions notables de Louez sont documentées ici.
 
 ---
 
-## [Non publié]
+## [2.3.0] - 14 octobre 2026
+
+### 🏪 Boutique en ligne & commande
+
+- 🛒 **Boutique de location repensée** — Les clients choisissent leurs dates, parcourent le catalogue et ajoutent matériel, variantes et accessoires directement depuis la liste, puis vérifient leur panier avant de réserver. Navigation et filtres sont conservés d'une page à l'autre, le stock indisponible est filtré.
+- 🖼️ **Éditeur d'apparence plein écran** — Aperçu en direct, texte du bandeau placé librement sur la photo, mise en page du bandeau choisie par la boutique, favicon et slogan.
+- 📅 **Disponibilités plus fiables** — Le calendrier précharge et valide les disponibilités, les tarifs saisonniers s'affichent dans les calendriers et les détails de prix, le retour est un choix unique.
+- 💳 **Paiements plus sûrs** — Reprise des paiements en attente sans doublon, fausses confirmations évitées, minimums Stripe respectés et commandes échouées annulées.
+- 🧾 **Commande affinée** — Autocomplétion d'adresse, étapes et couverture d'assurance plus claires, caution exclue du total produit, remises masquées au-delà du plafond d'affichage de la boutique.
+- 🧩 **Widget intégrable** — Reconstruit autour de champs date et heure séparés, redimensionnement fiable et aperçu côté site hôte.
+- 🔍 **SEO** — Slugs produits et catégories lisibles, langue de repli, réglage de vérification Search Console ; OpenFreeMap remplace CARTO pour les cartes.
+
+### 📦 Produits & tarification
+
+- 💶 **Prix fixe et stock consommable** — Articles au forfait indépendants de la durée, consommables vendus plutôt que restitués, accessoires obligatoires et stock non suivi.
+- 📈 **Éditeur de tarifs** — Paliers de tarifs avec simulation, tarifs saisonniers répartis sur toute la durée de location, promotions dans les formulaires et les listes.
+- 🏷️ **Variantes par produit** — Les variantes sont gérées par produit ; les réservations sans variante choisie restent flottantes jusqu'à l'affectation, et les variantes et valeurs existantes sont préservées.
+
+### 📅 Réservations, tableau de bord & compte client
+
+- 🧾 **Identité de facturation par réservation** — Chaque réservation conserve son propre instantané de facturation.
+- 🔙 **Navigation retour** — Calendrier et planning retrouvent la date consultée, l'en-tête de réservation utilise l'historique natif.
+- 🗓️ **Calendrier** — Icônes distinctes pour livraison et retour ; les données de timeline passent par des procédures oRPC limitées à la boutique.
+- 🔐 **Permissions** — Les droits de gestion de boutique sont appliqués sur les opérations sensibles et reflétés dans toute l'interface.
+- 👤 **Compte client** — Les clients voient cautions, mises à jour, rapports d'inspection et détails de livraison, peuvent demander une annulation et supprimer leur compte.
+- 🛍️ **Canaux de vente** — Réglages simplifiés et intégration de la place de marché Reeent : canal catalogue, API de réservation et boutique sans habillage.
+
+### 🌍 Langues, documents & marque
+
+- 🌐 **Treize langues** — L'application, les documents et les démos sont alignés sur les treize langues du site ; dates et nombres suivent la langue active ; la langue de commande est conservée dans les emails et contrats clients.
+- 📄 **Documents** — Mises en page PDF rafraîchies avec les articles assurés signalés, réservations boutique imprimées comme signées à la commande, police Inter embarquée pour que chaque langue imprime ses caractères, numéros de page qui ne cassent plus les longs documents.
+- ✉️ **Emails** — Modèles transactionnels unifiés sur des jetons de design partagés ; les notes client apparaissent dans l'email de demande au loueur.
+- 🔑 **Mot de passe optionnel** — Les commerçants peuvent ajouter un mot de passe à côté de la connexion par lien magique, avec limitation du nombre de tentatives.
+- ✨ **Nouveau symbole de marque** — Adopté sur toutes les icônes, avec des icônes PWA versionnées pour que les applications installées le récupèrent.
+
+### 🐳 Auto-hébergement, sécurité & mises à niveau
+
+- ⚙️ **Configuration publique au démarrage** — Les valeurs `NEXT_PUBLIC_*` sont lues par le serveur à l'exécution et injectées dans la page : une seule image publiée fonctionne sur n'importe quel domaine. Corrige #65.
+- 📦 **MinIO** — L'image `minio/minio` retirée est remplacée par la version Chainguard ; les volumes existants continuent de fonctionner.
+- 🗃️ **Mise à niveau automatique du schéma** — Quinze migrations additives (instantanés de facturation, slugs de catégories, favicon et slogan, limitation des connexions, modèles de prix et de stock). Elles s'exécutent au démarrage comme auparavant.
+- 🔒 **Durcissement** — Variables serveur tenues hors des bundles client (SMS, abonnement), vérification de propriété Search Console protégée, remboursements Stripe exclus du chiffre d'affaires.
+- 🧪 **Harnais QA** — QA de bout en bout de la boutique avec contrôles HTTP et galerie de fixtures pour emails et PDF ; les affiches de démo ne sont plus capturées pendant la construction de l'image.
+
+> **Note auto-hébergement :** `docker compose pull && docker compose up -d` met à niveau la stack fournie. Les bases existantes migrent automatiquement au démarrage.
+
+---
+
+## [2.2.0] - 24 août 2026
+
+> Couvre aussi les correctifs 2.2.1 et 2.2.2 publiés le même jour.
+
+### 🧾 Facturation électronique
+
+- 📑 **Factures légales à chaque encaissement** — Numérotation, générateur EN 16931, PDF et déclencheurs automatiques ; les remboursements de paiements manuels produisent des avoirs.
+- 🔗 **Intégration Super PDP** — Enrôlement OAuth, file de transmission et suivi des événements ; les factures sont transmises dès l'encaissement ; la validation du compte est un état en attente qui se résout seul.
+- 📥 **Boîte de réception fournisseurs** — Factures reçues, notifications et synchronisation manuelle ; la configuration en réception seule est un résultat à part entière.
+- 🏢 **Clients professionnels** — Saisie du SIREN et de la TVA à la commande ; le régime de TVA de la boutique est synchronisé avec Super PDP.
+
+### 📊 Analytics & tableau de bord
+
+- 📈 **Analyse des ventes** — Page des ventes hiérarchisée, métriques d'activité, meilleurs clients, paiements manuels toujours inclus ; acquisition reliée à l'onboarding.
+- 💸 **Virements Stripe** — Historique des virements avec pagination.
+- 📱 **Réservations sur mobile** — Actions rapides, tiroir de confirmation, acceptation des demandes et détails du calendrier sur mobile ; filtre par moyen de paiement ; export ZIP groupé des contrats.
+- 🏠 **Accueil** — Retraits et retours en retard du jour signalés ; invitations à installer l'application et aux notifications déplacées dans la barre latérale ; raccourci pour le thème.
+- 🗂️ **Boutique** — Mode de navigation par catégorie.
 
 ### 📄 Licence
 
@@ -606,6 +739,11 @@ Toutes les évolutions notables de Louez sont documentées ici.
 - ↩️ **Copyleft réseau** — Si vous modifiez Louez et le proposez à des tiers via un réseau, vous devez mettre le code source modifié à disposition de ces utilisateurs sous AGPL.
 - ™️ **Marque réservée** — « Louez » et le logo Louez restent des marques de Synapsr. L'AGPL couvre le code, pas la marque.
 - 🎨 **Ressources tierces inchangées** — Les icônes Nucleo restent hors du périmètre de la licence du dépôt et nécessitent une licence Nucleo valide ; les attributions rembg (MIT) et DIS/IS-Net (Apache 2.0) figurent toujours dans `NOTICE`.
+
+### 🐳 Auto-hébergement
+
+- 🟢 **Node 22** — Image de production passée à Node 22 ; boutons de déploiement en un clic ; guide de contribution avec signature DCO.
+- 🗃️ **Deux migrations additives** pour le schéma de facturation électronique, exécutées au démarrage.
 
 ---
 
